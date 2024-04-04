@@ -16,8 +16,8 @@ services:
   jenkins_controller:
     image: ${IMAGE_PREFIX}/${GHCR_USERNAME}/quickstart-tutorials/jenkinsci-tutorials:simple_controller_${BRANCH_SUFFIX}
     restart: on-failure
-    ports:
-      - "8080:8080"
+    expose:
+      - 8080
     volumes:
       - jenkins_home:/var/jenkins_home # Mounts the jenkins_home volume to the /var/jenkins_home path inside the container
       - agent-ssh-dir:/ssh-dir # Mounts the agent-ssh-dir volume to the /app path inside the container
