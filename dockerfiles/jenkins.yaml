@@ -32,14 +32,14 @@ credentials:
               privateKey: ${readFile:/ssh-dir/jenkins_agent_ed}
           scope: SYSTEM
           username: "jenkins"
-      - credentials:
-        - basicSSHUserPrivateKey:  # Assuming SSH key authentication
-          id: "docker-cred"  # Unique ID for the new user
-          description: "docker-cred"
-          privateKeySource:
-            directEntry:
-              privateKey: ${readFile:/ssh-dir/jenkins_agent_ed}
-          username: "traipoap"  # Username for the new user
+    - credentials:
+      - basicSSHUserPrivateKey:  # Assuming SSH key authentication
+        id: "docker-cred"  # Unique ID for the new user
+        description: "docker-cred"
+        privateKeySource:
+          directEntry:
+            privateKey: ''
+        username: "traipoap"  # Username for the new user
 unclassified:
   location:
     url: "http://127.0.0.1:8080/"
