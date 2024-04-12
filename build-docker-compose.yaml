@@ -16,11 +16,14 @@ services:
   jenkins_controller:
     build: dockerfiles/.
     restart: on-failure
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     expose:
       - 8080
     volumes:
       - jenkins_home:/var/jenkins_home # Mounts the jenkins_home volume to the /var/jenkins_home path inside the container
       - agent-ssh-dir:/ssh-dir # Mounts the agent-ssh-dir volume to the /app path inside the container
+      - '/var/run/docker.sock:/var/run/docker.sock'
     depends_on:
       sidekick_service:
         condition: service_completed_successfully # Depends on the successful completion of the sidekick_service
