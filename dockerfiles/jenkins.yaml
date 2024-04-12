@@ -38,7 +38,7 @@ credentials:
           description: "docker-cred"
           privateKeySource:
             directEntry:
-              privateKey: ""
+              privateKey: ${readFile:/ssh-dir/jenkins_agent_ed}
           username: "traipoap"  # Username for the new user
 unclassified:
   location:
