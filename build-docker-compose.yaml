@@ -49,8 +49,6 @@ services:
   maven:
     build: dockerfiles/maven/.
     container_name: desktop-jenkins_agent-1
-    environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
     profiles:
       - maven
     depends_on:
