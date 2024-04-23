@@ -13,6 +13,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+
   jenkins_controller:
     build: dockerfiles/.
     restart: on-failure
@@ -30,6 +31,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+
   default_agent:
     image: jenkins/ssh-agent:5.31.0
     container_name: desktop-jenkins_agent-1
@@ -46,6 +48,7 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+
   maven:
     build: dockerfiles/maven/.
     container_name: desktop-jenkins_agent-1
@@ -64,8 +67,9 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock # unix
+      - /usr/bin/docker:/usr/bin/docker # docker
+
   python:
     build: dockerfiles/python/.
     container_name: desktop-jenkins_agent-1
@@ -84,6 +88,9 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+      - /var/run/docker.sock:/var/run/docker.sock # unix
+      - /usr/bin/docker:/usr/bin/docker # docker
+
   node:
     build: dockerfiles/node/.
     environment:
@@ -96,8 +103,8 @@ services:
         condition: service_completed_successfully # Depends on the successful completion of the sidekick_service
       jenkins_controller:
         condition: service_started
-    ports:
-      - "3000:3000"
+    expose:
+      - 3000
     healthcheck:
       test: ["CMD-SHELL", "[ -f /home/jenkins/.ssh/authorized_keys ] || exit 1"]
       # Checks if the authorized_keys file exists in the /home/jenkins/.ssh path
@@ -106,6 +113,9 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+      - /var/run/docker.sock:/var/run/docker.sock # unix
+      - /usr/bin/docker:/usr/bin/docker # docker
+
   multi:
     build: dockerfiles/multi/.
     environment:
@@ -129,6 +139,7 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+
   android:
     build: dockerfiles/android/.
     environment:

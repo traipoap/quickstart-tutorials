@@ -27,3 +27,7 @@ RUN curl -sS -L -O --output-dir /tmp/ --create-dirs  https://archive.apache.org/
 ENV M2_HOME="/opt/maven"
 ENV PATH="${M2_HOME}/bin/:${PATH}" 
 RUN echo "PATH=${PATH}" >> /etc/environment && chown -R jenkins:jenkins "${JENKINS_AGENT_HOME}"
+
+RUN curl -SL https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+RUN docker-compose --version
