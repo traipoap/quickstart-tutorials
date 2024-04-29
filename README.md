@@ -1,7 +1,13 @@
 ## Custom agent for access docker daemon
+### On container agent
 ~~~ bash
 docker exec -it desktop-jenkins_agent-1-golang chown -R jenkins:jenkins /var/run/docker.sock
 ~~~
+### On host docker daemon
+~~~ bash
+usermod -aG docker jenkins
+~~~
+
 
 # Jenkins Tutorial Files
 
