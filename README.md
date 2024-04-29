@@ -1,3 +1,8 @@
+## Custom agent for access docker daemon
+~~~ bash
+docker exec -it desktop-jenkins_agent-1-golang chown -R jenkins:jenkins /var/run/docker.sock
+~~~
+
 # Jenkins Tutorial Files
 
 This repository includes the files necessary for transitioning from `docker` to `docker compose` in our Jenkins tutorials and installation guides.
