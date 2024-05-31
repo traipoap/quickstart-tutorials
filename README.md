@@ -19,12 +19,14 @@ Gitpod is a cloud-based development environment designed for teams. It supports 
     - node
     - python
     - multibranch pipeline
+    - rust
 
 - To run different examples with `docker compose up -d`, append the example name to the command, like so:
     - `maven` => `docker compose --profile maven up -d`
     - `python` => `docker compose --profile python up -d`
     - `node` => `docker compose --profile node up -d`
     - `multi` => `docker compose --profile  multi up -d`
+    - `rust` => ` docker compose -f build-docker-compose.yaml --profile rust up -d`
 
 - If no tutorial-related argument is used (i.e., `docker compose --profile default up -d`), the command runs the latest default example.
 - If no argument regarding profiles is used at all (i.e., `docker compose up -d`), then you will have a Jenkins controller desperately waiting for a non existent agent to connect.
