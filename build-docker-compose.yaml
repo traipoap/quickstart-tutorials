@@ -25,6 +25,7 @@ services:
       - android
       - multi
       - golang
+      - rust
       - default
     # This service depends on the sidekick_service (generating SSH keys and JCasc token) completing successfully.
     depends_on:
@@ -46,8 +47,8 @@ services:
     # The CASC_RELOAD_TOKEN environment variable is used by the Jenkins controller to restart the Configuration as Code (JCasc) plugin configuration.
     environment:
       - CASC_RELOAD_TOKEN=thisisnotsecure
-    ports:
-      - "8080:8080"
+    export:
+      - 8080
     volumes:
       - jenkins_home:/var/jenkins_home # Mounts the jenkins_home volume to the /var/jenkins_home path inside the container
       - agent-ssh-dir:/ssh-dir # Mounts the agent-ssh-dir volume to the /app path inside the container
@@ -205,6 +206,30 @@ services:
       retries: 5
     volumes:
       - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+      
+  rust:
+    build: dockerfiles/rust/.
+    container_name: desktop-jenkins_agent-1-rust
+    profiles:
+      - rust
+    depends_on:
+      sidekick_service:
+        condition: service_completed_successfully # Depends on the successful completion of the sidekick_service
+      jenkins_controller:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /home/jenkins/.ssh/authorized_keys ] || exit 1"]
+      # Checks if the authorized_keys file exists in the /home/jenkins/.ssh path
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - agent-ssh-dir:/home/jenkins/.ssh:ro # Mounts the agent-ssh-dir volume to the /home/jenkins/.ssh path inside the container as read-only
+      - /var/run/docker.sock:/var/run/docker.sock # unix
+      - /usr/bin/docker:/usr/bin/docker # docker
+
 volumes:
   jenkins_home: null
   agent-ssh-dir:
